@@ -22,8 +22,9 @@
 	$whoops->register();
 	
 	//http component
-	$request = new \Http\HttpRequest($_GET, $_POST, $_COOKIE, $_FILES, $_SERVER);
-	$response = new \Http\HttpResponse;
+	$injector = include('Dependencies.php');
+	$request = $injector->make('Http\HttpRequest');
+	$response = $injector->make('Http\HttpResponse');
 	
 	$routeDefinitionCallback = function (\FastRoute\RouteCollector $r) {
     $routes = include('Routes.php');
@@ -48,7 +49,7 @@
 			$method = $routeInfo[1][1];
 			$vars = $routeInfo[2];
 			
-			$class = new $className;
+			$class = $injector->make($className);
 			$class->$method($vars);
 			break;
 	}
