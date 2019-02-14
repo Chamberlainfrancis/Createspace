@@ -6,7 +6,7 @@ use Http\Request;
 use Http\Response;
 use Createspace\Template\FrontendRenderer;
 
-class Homepage
+class About
 {
     private $request;
     private $response;
@@ -26,7 +26,7 @@ class Homepage
         $data = [
 			'name' => $this->request->getParameter('name', 'stranger'),
 		];
-        $html = $this->FrontendRenderer->render('Homepage', $data);
+        $html = $this->FrontendRenderer->render('About', $data);
         $this->response->setContent($html);
     }
 }
