@@ -4,28 +4,29 @@ namespace Createspace\Controllers;
 
 use Http\Request;
 use Http\Response;
+use Createspace\Template\Renderer;
 
 class Homepage
 {
     private $request;
     private $response;
+    private $renderer;
 
-    public function __construct(Request $request, Response $response)
-    {
+    public function __construct(
+        Request $request, 
+        Response $response,
+        Renderer $renderer
+    ) {
         $this->request = $request;
         $this->response = $response;
+        $this->renderer = $renderer;
     }
-
-    public function show()
+	public function show()
     {
-        $content = '<h1>Hello World, Test App</h1>';
-        $content .= 'Parameter Hello ' . $this->request->getParameter('name', 'stranger');
-        $this->response->setContent($content);
-
-        foreach ($this->response->getHeaders() as $header) {
-            header($header, false);
-        }
-
-        echo $this->response->getContent();
+        $data = [
+            'name' => $this->request->getParameter('name', 'stranger'),
+        ];
+        $html = $this->renderer->render('Homepage', $data);
+        $this->response->setContent($html);
     }
 }
